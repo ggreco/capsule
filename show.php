@@ -18,17 +18,22 @@ $dbhandle = new SQLite3('db/capsule.db');
 
 function draw_capsule($row, $can_modify)
 {
+    $name = mb_convert_encoding($row["Nome"], 'HTML-ENTITIES', 'utf-8');
+    $reg = mb_convert_encoding($row["regione"], 'HTML-ENTITIES', 'utf-8');
+    $cat = mb_convert_encoding($row["Categoria"], 'HTML-ENTITIES', 'utf-8');
+    $desc = mb_convert_encoding($row["Descrizione"], 'HTML-ENTITIES', 'utf-8');
+
     print("
       <td width=\"13%\">
-      <div align=\"center\"><a href=\"{$row["Foto"]}\" rel=\"lightbox\"><img style=\"border: 0px solid ; width: 90px; height: 90px;\" alt=\"{$row["Nome"]}\" src=\"{$row["Foto"]}\"></a></div>
+      <div align=\"center\"><a href=\"{$row["Foto"]}\" rel=\"lightbox\"><img style=\"border: 0px solid ; width: 90px; height: 90px;\" alt=\"$name\" src=\"{$row["Foto"]}\"></a></div>
       </td>
-      <td width=\"20%\"><strong>{$row["Nome"]}</strong>
+      <td width=\"20%\"><strong>$name</strong>
       ");
 
     if ($row["Quantita"] > 1)
         print " <span style=\"background-color:red;color:yellow;padding-left:2px;padding-right:2px;\">x{$row["Quantita"]}</span> ";
 
-    print "<br>{$row["regione"]}<br>{$row["Categoria"]}<br><br>{$row["Descrizione"]} (Val {$row["Valore"]})";
+    print "<br>$reg<br>$cat<br><br>$desc (Val {$row["Valore"]})";
 
     if ($can_modify)
         print "<a style=\"font-size:10px;float:right;\" href=\"insert.php?id={$row["Id"]}\">[Modifica]</a>";
