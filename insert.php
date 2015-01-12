@@ -53,13 +53,15 @@ function insert_modify_capsule() {
            $name = SQLite3::escapeString($_POST["name"]);
            $desc = SQLite3::escapeString($_POST["desc"]);
            $cat = SQLite3::escapeString($_POST["cat"]);
+           $reg = SQLite3::escapeString($_POST["reg"]);
+
            $q = $_POST["quant"];
            $v = $_POST["val"];
 
            if ($is_update) {
                $id = $_POST["id"];
 
-               $db->exec("UPDATE capsule SET Nome='$name',Descrizione='$desc',Categoria='$cat',Valore=$v,Quantita=$q,Modifica=datetime('now') WHERE Id=$id");
+               $db->exec("UPDATE capsule SET Nome='$name',Descrizione='$desc',Categoria='$cat',Valore=$v,Quantita=$q,Modifica=datetime('now'),regione='$reg' WHERE Id=$id");
                print "<h1>Record aggiornato correttamente</h1>";
            }
            else {
@@ -80,7 +82,7 @@ function insert_modify_capsule() {
                    print "<h1>Impossibile aggiungere immagine ($pic), inserimento fallito.</h1>";
                }
                else {
-                   $db->exec("INSERT INTO capsule (Nome,Descrizione,Categoria,Valore,Foto,Quantita) VALUES ('$name', '$desc', '$cat', $v, '$pic', $q)");
+                   $db->exec("INSERT INTO capsule (Nome,Descrizione,Categoria,Valore,Foto,Quantita,regione) VALUES ('$name', '$desc', '$cat', $v, '$pic', $q, '$reg')");
 
                    print "<h1>Record aggiunto correttamente</h1>";
                }
@@ -126,11 +128,13 @@ function insert_modify_capsule() {
         $quant = 1;
         $val = 1;
         $op = "Inserisci";
+        $reg ="";
     }
     else {
         print "<p/><h1>Modifico dati capsula</h1><p/>";
 
         $name = $cap["Nome"];
+        $reg = $cap["regione"];
         $desc = $cap["Descrizione"];
         $cat = $cap["Categoria"];
         $quant = $cap["Quantita"];
@@ -144,6 +148,7 @@ print "<input name=\"id\" type=\"hidden\" value=\"$id\">";
 
 print "
 <tr><td>Nome</td><td><input name=\"name\" type=\"text\" value=\"$name\"></td></tr>
+<tr><td>Regione</td><td><input name=\"reg\" type=\"text\" value=\"$reg\"> (usare nazione per capsule straniere)</td></tr>
 <tr><td>Descrizione</td><td><input name=\"desc\" type=\"text\" value=\"$desc\"></td></tr>
 <tr><td>Categoria</td><td><input name=\"cat\" type=\"text\" value=\"$cat\"></td></tr>
 <tr><td>Valore</td><td><input name=\"val\" type=\"text\" value=\"$val\"></td></tr>

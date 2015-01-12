@@ -28,7 +28,7 @@ function draw_capsule($row, $can_modify)
     if ($row["Quantita"] > 1)
         print " <span style=\"background-color:red;color:yellow;padding-left:2px;padding-right:2px;\">x{$row["Quantita"]}</span> ";
 
-    print "<br>{$row["Descrizione"]}<br>{$row["Categoria"]}<br><br>Valore: {$row["Valore"]}";
+    print "<br>{$row["regione"]}<br>{$row["Categoria"]}<br><br>{$row["Descrizione"]} (Val {$row["Valore"]})";
 
     if ($can_modify)
         print "<a style=\"font-size:10px;float:right;\" href=\"insert.php?id={$row["Id"]}\">[Modifica]</a>";
@@ -62,6 +62,8 @@ if (array_key_exists("last_added", $_GET))
 
 if (array_key_exists("last_modified", $_GET))
     $stm .= " order by datetime(Modifica) desc";
+else
+	$stm .= " order by Nome";
 
 if (array_key_exists("limit", $_GET)) 
     $stm .= " LIMIT " . $_GET["limit"];
