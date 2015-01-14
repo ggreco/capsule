@@ -10,9 +10,20 @@
     <p/>
     <form method="post" action="do_search.php">
         <table>
-            <tr><td>Zona</td><td><input name="name" type="text"></td></tr>
+            <tr><td>Azienda</td><td><input name="name" type="text"></td></tr>
+            <tr><td>Zona</td><td><input name="reg" type="text"></td></tr>
             <tr><td>Descrizione</td><td><input name="desc" type="text"></td></tr>
             <tr><td>Categoria</td><td><input name="cat" type="text"></td></tr>
+            <tr><td>Valore</td>
+                <td>
+                    <select name="val"> 
+                        <option value="0">Tutte</option>
+                        <option value="2">Non comuni (2+)</option>
+                        <option value="8">Rare (8+)</option>
+                        <option value="10">Quasi uniche (10)</option>
+                    </select>
+                </td>
+            </tr>
             <tr><td colspan="2"><center><input type="submit" value="Cerca"></center></td></tr>
         </table>
     </form>

@@ -19,6 +19,11 @@
 <h4>
 <ul>
 <li><a href="show.php" >Tutte le capsule</a> (attenzione!! sono migliaia di capsule)</li>
+<li><b>Per lettera:</b> 
+<?php
+    for ($i = 'A'; $i != 'AA'; $i++)
+        print "<a href=\"show.php?alfabetico=$i\">$i</a> ";
+?>
 <p/>
 <li><a href="show.php?nome=piemonte" >Piemonte</a></li>
 <li><a href="show.php?nome=veneto" >Veneto</a></li>

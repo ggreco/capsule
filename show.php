@@ -44,8 +44,11 @@ function draw_capsule($row, $can_modify)
 
 $stm = "SELECT * from capsule";
 
-if (array_key_exists("nome", $_GET) ||
+if (array_key_exists("alfabetico", $_GET))
+    $stm .= " WHERE nome like '{$_GET["alfabetico"]}%'";
+else if (array_key_exists("nome", $_GET) ||
     array_key_exists("cat", $_GET) ||
+    array_key_exists("reg", $_GET) ||
     array_key_exists("doppie", $_GET) ||
     array_key_exists("desc", $_GET) ||
     array_key_exists("valore_min", $_GET))
@@ -53,6 +56,8 @@ if (array_key_exists("nome", $_GET) ||
 
 if (array_key_exists("nome", $_GET))
     $stm .= " and Nome like '%{$_GET["nome"]}%'";
+if (array_key_exists("reg", $_GET))
+    $stm .= " and regione like '%{$_GET["reg"]}%'";
 if (array_key_exists("desc", $_GET))
     $stm .= " and Descrizione like '%{$_GET["desc"]}%'";
 if (array_key_exists("cat", $_GET))
@@ -96,8 +101,8 @@ while ($row = $result->fetchArray()) {
     $number++;
 }
 
-if ($number > 0)
-    print('</tr></font></table>');
+if ($number > 0) 
+    print "</tr></font></table><br><center><h3>Totale capsule visualizzate: $number</h3></center>";
 
 $dbhandle->close();
 ?>
