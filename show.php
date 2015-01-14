@@ -69,8 +69,7 @@ if (array_key_exists("valore_min", $_GET))
 
 if (array_key_exists("last_added", $_GET))
     $stm .= " order by datetime(Creazione) desc";
-
-if (array_key_exists("last_modified", $_GET))
+else if (array_key_exists("last_modified", $_GET))
     $stm .= " order by datetime(Modifica) desc";
 else
 	$stm .= " order by Nome";
