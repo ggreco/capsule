@@ -25,9 +25,9 @@
         print "<a href=\"show.php?alfabetico=$i\">$i</a> ";
 ?>
 <p/>
-<li><a href="show.php?nome=piemonte" >Piemonte</a></li>
-<li><a href="show.php?nome=veneto" >Veneto</a></li>
-<li><a href="show.php?nome=lombardia" >Lombardia</a></li>
+<li><a href="show.php?reg=piemonte" >Piemonte</a></li>
+<li><a href="show.php?reg=veneto" >Veneto</a></li>
+<li><a href="show.php?reg=lombardia" >Lombardia</a></li>
 <p/>
 <li><a href="show.php?last_added&limit=18" >Ultime aggiunte</a></li>
 <li><a href="search.php" >Ricerca</a></li>
