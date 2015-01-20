@@ -19,15 +19,14 @@
 <h4>
 <ul>
 <li><a href="show.php" >Tutte le capsule</a> (attenzione!! sono migliaia di capsule)</li>
-<li><b>Per lettera:</b> 
+<p/>
+<li><b>Per lettera:</b><br/> 
 <?php
     for ($i = 'A'; $i != 'AA'; $i++)
         print "<a href=\"show.php?alfabetico=$i\">$i</a> ";
 ?>
 <p/>
-<li><a href="show.php?reg=piemonte" >Piemonte</a></li>
-<li><a href="show.php?reg=veneto" >Veneto</a></li>
-<li><a href="show.php?reg=lombardia" >Lombardia</a></li>
+<li><b>Per regione:</b><br/> <a href="show.php?reg=piemonte" >Piemonte</a>, <a href="show.php?reg=veneto" >Veneto</a>, <a href="show.php?reg=lombardia" >Lombardia</a>, <a href="show.php?reg=emilia" >Emilia Romagna</a>, <a href="show.php?reg=trentino" >Trentino</a></li>
 <p/>
 <li><a href="show.php?last_added&limit=18" >Ultime aggiunte</a></li>
 <li><a href="search.php" >Ricerca</a></li>

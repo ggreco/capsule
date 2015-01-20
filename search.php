@@ -18,9 +18,9 @@
                 <td>
                     <select name="val"> 
                         <option value="0">Tutte</option>
-                        <option value="2">2+</option>
-                        <option value="5">5+</option>
-                        <option value="8">8+</option>
+                        <option value="2">Fino a 2</option>
+                        <option value="3">Da 3 a 5</option>
+                        <option value="6">6 e oltre</option>
                     </select>
                 </td>
             </tr>

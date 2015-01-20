@@ -150,7 +150,7 @@ print "
 <tr><td>Nome</td><td><input name=\"name\" type=\"text\" value=\"$name\"></td></tr>
 <tr><td>Regione</td><td><input name=\"reg\" type=\"text\" value=\"$reg\"> (usare nazione per capsule straniere)</td></tr>
 <tr><td>Descrizione</td><td><input name=\"desc\" type=\"text\" value=\"$desc\"></td></tr>
-<tr><td>Categoria</td><td><input name=\"cat\" type=\"text\" value=\"$cat\"></td></tr>
+<tr><td>Codice CCC</td><td><input name=\"cat\" type=\"text\" value=\"$cat\"></td></tr>
 <tr><td>Valore</td><td><input name=\"val\" type=\"text\" value=\"$val\"></td></tr>
 <tr><td>Quantit&agrave;</td><td><input name=\"quant\" type=\"text\" value=\"$quant\"> (usare &gt;1 per indicare le doppie)</td></tr>";
 
