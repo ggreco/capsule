@@ -1,5 +1,12 @@
 <?php
-    $url = "show.php?valore_min=" . $_POST["val"]; 
+    $v = $_POST["val"];
+
+    if ($v == "2") 
+        $url = "show.php?valore_max=2";
+    else if ($v == "3")
+        $url = "show.php?valore_min=3&valore_max=5";
+    else
+        $url = "show.php?valore_min=$v"; 
 
     if (!empty($_POST["name"]))
         $url .= "&nome=" . urlencode($_POST["name"]); 

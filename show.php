@@ -51,7 +51,8 @@ else if (array_key_exists("nome", $_GET) ||
     array_key_exists("reg", $_GET) ||
     array_key_exists("doppie", $_GET) ||
     array_key_exists("desc", $_GET) ||
-    array_key_exists("valore_min", $_GET))
+    array_key_exists("valore_min", $_GET) ||
+    array_key_exists("valore_max", $_GET))
     $stm .= " WHERE 1 = 1";
 
 if (array_key_exists("nome", $_GET))
@@ -66,6 +67,8 @@ if (array_key_exists("doppie", $_GET))
     $stm .= " and Quantita > 1";
 if (array_key_exists("valore_min", $_GET))
     $stm .= " and Valore >= {$_GET["valore_min"]}";
+if (array_key_exists("valore_max", $_GET))
+    $stm .= " and Valore <= {$_GET["valore_max"]}";
 
 if (array_key_exists("last_added", $_GET))
     $stm .= " order by datetime(Creazione) desc";
