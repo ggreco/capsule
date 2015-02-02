@@ -41,8 +41,29 @@ function draw_capsule($row, $can_modify)
     print "</td>";
 }
 
+function draw_pages($start, $total, $limit)
+{
+    $pages = ceil($total/$limit);
 
-$stm = "SELECT * from capsule";
+    $actual = $start / $limit + 1;
+
+    if ($pages <= 1)
+        return;
+
+    print "<h3>";
+    for ($i = 1; $i <= $pages; $i++) {
+        if ($i == $actual) 
+            print "[" . $i . "] ";
+        else {
+            
+            print "<a href=i\"show.php\">[$i]</a> ";
+        }
+    }
+    print "</h3>";
+}
+
+
+$stm = " from capsule";
 
 if (array_key_exists("alfabetico", $_GET))
     $stm .= " WHERE nome like '{$_GET["alfabetico"]}%'";
@@ -77,22 +98,56 @@ else if (array_key_exists("last_modified", $_GET))
 else
 	$stm .= " order by Nome";
 
-if (array_key_exists("limit", $_GET)) 
-    $stm .= " LIMIT " . $_GET["limit"];
+$total = -1;
+$first = 0;
+$limit = 30;
 
-$result = $dbhandle->query($stm);
+$nopage = array_key_exists("nopage", $_GET);
+
+// se c'e' total deve esserci anche first
+if (array_key_exists("total", $_GET)) {
+    $total = $_GET["total"];
+    $first = $_GET["first"];
+}
+
+if (array_key_exists("limit", $_GET))
+    $limit = $_GET["limit"];
+
+if (!$nopage) {
+    
+    if ($total == -1) {
+        $result = $dbhandle->query("select count(*) " . $stm);
+        if ($row = $result->fetchArray()) 
+            $total = $row[0];
+
+        if ($total < $limit)
+            $limit = -1;
+    }
+   
+    if (array_key_exists("limit", $_GET)) {
+        if ($total > 0)) 
+            $stm .= " LIMIT " . $first . "," . $_GET["limit"];
+        else
+            $stm .= " LIMIT " . $_GET["limit"];
+    }
+    else if ($limit > 0 && $total > 0) {
+            $stm .= " LIMIT " . $first . "," . $limit;
+    }
+}
+
+$result = $dbhandle->query("select * " . $stm);
 
 if (!$result)
     die("Cannot execute query.");
 
 $number = 0;
 
-while ($row = $result->fetchArray()) {
-    if ($number == 0) {
-        print('<table align="center" border="1" bordercolor="#000000" cellpadding="2" cellspacing="0" width="80%">
-               <font face="Arial, Helvetica, sans-serif" size="2">');
-    }
+if ($total > 0) {
+    print('<table align="center" border="1" bordercolor="#000000" cellpadding="2" cellspacing="0" width="80%">
+        <font face="Arial, Helvetica, sans-serif" size="2">');
+}
 
+while ($row = $result->fetchArray()) {
     if (($number % 3) == 0) {
         if ($number != 0)
             print('</tr>');
@@ -103,8 +158,12 @@ while ($row = $result->fetchArray()) {
     $number++;
 }
 
-if ($number > 0) 
-    print "</tr></font></table><br><center><h3>Totale capsule visualizzate: $number</h3></center>";
+if ($total > 0) {
+    print "</tr></font></table>"
+    
+    draw_pages(
+    print "<br><h3>Totale capsule trovate: $total ($number visualizzate in questa pagina)</h3>";
+}
 
 $dbhandle->close();
 ?>

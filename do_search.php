@@ -4,7 +4,9 @@
     if ($v == "2") 
         $url = "show.php?valore_max=2";
     else if ($v == "3")
-        $url = "show.php?valore_min=3&valore_max=5";
+        $url = "show.php?valore_min=3&valore_max=4";
+    else if ($v == "5")
+        $url = "show.php?valore_min=5&valore_max=6";
     else
         $url = "show.php?valore_min=$v"; 
 
