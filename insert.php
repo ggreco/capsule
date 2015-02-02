@@ -165,6 +165,8 @@ if ($id != -1)
 print "</center></td></tr>
 </table>
 </form>
+<p/>
+<h3><a href=\"index.php\">Torna alla pagina principale</a></h3>
 </body>
 </html>
 ";

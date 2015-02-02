@@ -41,8 +41,51 @@ function draw_capsule($row, $can_modify)
     print "</td>";
 }
 
+function draw_pages($start, $total, $limit, &$vec)
+{
+    $pages = ceil($total/$limit);
 
-$stm = "SELECT * from capsule";
+    $actual = $start / $limit + 1;
+
+    if ($pages <= 1)
+        return;
+
+    $baseparams = "show.php?";
+
+    foreach ($vec as $key => $val) {
+        if ($key == "first" || $key == "limit")
+            continue;
+        $baseparams .= "$key=$val&";
+    }
+
+    print "<center><h3>";
+    if ($actual > 1) {
+        $idx = ($actual - 2) * $limit;
+        $params = "{$baseparams}first=$idx&limit=$limit&total=$total";
+        print "<a href=\"$params\">&lt;</a> ";
+    }
+
+    for ($i = 1; $i <= $pages; $i++) {
+        if ($i == $actual) 
+            print "[" . $i . "] ";
+        else {
+            $idx = ($i - 1) * $limit;
+            $params = "{$baseparams}first=$idx&limit=$limit&total=$total";
+
+            print "<a href=\"$params\">[$i]</a> ";
+        }
+    }
+    if ($actual < $pages) {
+        $idx = $actual * $limit;
+        $params = "{$baseparams}first=$idx&limit=$limit&total=$total";
+        print "<a href=\"$params\">&gt;</a> ";
+    }
+
+    print "</center></h3>";
+}
+
+
+$stm = " from capsule";
 
 if (array_key_exists("alfabetico", $_GET))
     $stm .= " WHERE nome like '{$_GET["alfabetico"]}%'";
@@ -54,6 +97,10 @@ else if (array_key_exists("nome", $_GET) ||
     array_key_exists("valore_min", $_GET) ||
     array_key_exists("valore_max", $_GET))
     $stm .= " WHERE 1 = 1";
+
+$selection = false;
+
+$nopage = array_key_exists("nopage", $_GET);
 
 if (array_key_exists("nome", $_GET))
     $stm .= " and Nome like '%{$_GET["nome"]}%'";
@@ -70,32 +117,66 @@ if (array_key_exists("valore_min", $_GET))
 if (array_key_exists("valore_max", $_GET))
     $stm .= " and Valore <= {$_GET["valore_max"]}";
 
-if (array_key_exists("last_added", $_GET))
-    $stm .= " order by datetime(Creazione) desc";
-else if (array_key_exists("last_modified", $_GET))
-    $stm .= " order by datetime(Modifica) desc";
+if (array_key_exists("last_added", $_GET)) {
+    $stm .= " order by datetime(Creazione) desc LIMIT {$_GET["limit"]}";
+    $nopage = true;
+}
+else if (array_key_exists("last_modified", $_GET)) {
+    $stm .= " order by datetime(Modifica) desc LIMIT {$_GET["limit"]}";
+    $nopage = true;
+}
 else
 	$stm .= " order by Nome";
 
-if (array_key_exists("limit", $_GET)) 
-    $stm .= " LIMIT " . $_GET["limit"];
+$total = -1;
+$first = 0;
+$limit = 30; // <- NUMERO da cambiare per alterare il limite
 
-print $stm;
+// se c'e' total deve esserci anche first
+if (array_key_exists("total", $_GET)) {
+    $total = $_GET["total"];
+    $first = $_GET["first"];
+}
 
-$result = $dbhandle->query($stm);
+if (array_key_exists("limit", $_GET))
+    $limit = $_GET["limit"];
+
+if ($total == -1) {
+    $result = $dbhandle->query("select count(*) " . $stm);
+    if ($row = $result->fetchArray()) 
+        $total = $row[0];
+
+    if ($total < $limit)
+        $limit = -1;
+}
+
+if (!$nopage) {
+    if (array_key_exists("limit", $_GET)) {
+        if ($total > 0) 
+            $stm .= " LIMIT " . $first . "," . $_GET["limit"];
+        else
+            $stm .= " LIMIT " . $_GET["limit"];
+    }
+    else if ($limit > 0 && $total > 0) {
+            $stm .= " LIMIT " . $first . "," . $limit;
+    }
+}
+
+$result = $dbhandle->query("select * " . $stm);
 
 if (!$result)
     die("Cannot execute query.");
 
 $number = 0;
 
+if ($total > 0) {
+    if (!$nopage)
+        draw_pages($first, $total, $limit, $_GET);
+    print('<table align="center" border="1" bordercolor="#000000" cellpadding="2" cellspacing="0" width="80%">
+        <font face="Arial, Helvetica, sans-serif" size="2">');
+}
 
 while ($row = $result->fetchArray()) {
-    if ($number == 0) {
-        print('<table align="center" border="1" bordercolor="#000000" cellpadding="2" cellspacing="0" width="80%">
-               <font face="Arial, Helvetica, sans-serif" size="2">');
-    }
-
     if (($number % 3) == 0) {
         if ($number != 0)
             print('</tr>');
@@ -106,8 +187,13 @@ while ($row = $result->fetchArray()) {
     $number++;
 }
 
-if ($number > 0) 
-    print "</tr></font></table><br><center><h3>Totale capsule visualizzate: $number</h3></center>";
+if ($total > 0) {
+    print "</tr></font></table>";
+    
+    if (!$nopage)
+        draw_pages($first, $total, $limit, $_GET);
+    print "<center><br><h3>Totale capsule trovate: $total ($number visualizzate in questa pagina)</h3></center>";
+}
 
 $dbhandle->close();
 ?>
