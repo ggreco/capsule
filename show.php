@@ -102,12 +102,18 @@ $selection = false;
 
 $nopage = array_key_exists("nopage", $_GET);
 
-if (array_key_exists("nome", $_GET))
-    $stm .= " and Nome like '%{$_GET["nome"]}%'";
-if (array_key_exists("reg", $_GET))
-    $stm .= " and regione like '%{$_GET["reg"]}%'";
-if (array_key_exists("desc", $_GET))
-    $stm .= " and Descrizione like '%{$_GET["desc"]}%'";
+if (array_key_exists("nome", $_GET)) {
+    $n = SQLite3::escapeString($_GET["nome"]);
+    $stm .= " and Nome like '%$n%'";
+}
+if (array_key_exists("reg", $_GET)) {
+    $n = SQLite3::escapeString($_GET["reg"]);
+    $stm .= " and regione like '%$n%'";
+}
+if (array_key_exists("desc", $_GET)) {
+    $n = SQLite3::escapeString($_GET["desc"]);
+    $stm .= " and Descrizione like '%$n%'";
+}
 if (array_key_exists("cat", $_GET))
     $stm .= " and Categoria like '%{$_GET["cat"]}%'";
 if (array_key_exists("doppie", $_GET))
